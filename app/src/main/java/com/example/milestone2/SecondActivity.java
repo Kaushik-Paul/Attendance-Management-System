@@ -45,7 +45,7 @@ public class SecondActivity extends AppCompatActivity {
         Log.i("Saved Item: ", save);
 
         LocalDateTime myDateObj = LocalDateTime.now();
-        DateTimeFormatter myFormatObj = DateTimeFormatter.ofPattern("dd-MM-yyyy HH,mm,ss");
+        DateTimeFormatter myFormatObj = DateTimeFormatter.ofPattern("dd-MM-yyyy HH.mm.ss");
 
         // Name of the saved file
         String fileName = teacherName + " " + myDateObj.format(myFormatObj) + ".txt";
@@ -113,6 +113,5 @@ public class SecondActivity extends AppCompatActivity {
         listView.setAdapter(arrayAdapter);
 
     }
-
 
 }

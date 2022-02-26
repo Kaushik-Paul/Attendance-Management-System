@@ -1,0 +1,12 @@
+<resources>
+    <string name="app_name">Milestone 2</string>
+    <string-array name="stream">
+        <item>CSE</item>
+        <item>IT</item>
+        <item>TT</item>
+        <item>APM</item>
+
+    </string-array>
+
+    <string name="done">done</string>
+</resources>

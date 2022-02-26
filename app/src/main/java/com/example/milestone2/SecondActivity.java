@@ -2,7 +2,6 @@ package com.example.milestone2;
 
 import android.Manifest;
 import android.content.pm.PackageManager;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.util.Log;
@@ -11,12 +10,13 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 
 import java.io.File;
-import java.io.FileOutputStream;
+import java.io.FileWriter;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -31,6 +31,7 @@ public class SecondActivity extends AppCompatActivity {
         listView = (ListView) findViewById(R.id.listView);
 
         String save = informationTextView.getText().toString() + "\n\r";
+        String teacherName = getIntent().getExtras().getString("teacherName");
 
         for (int i = 0; i < listView.getCount(); i++) {
             if (listView.isItemChecked(i)) {
@@ -43,37 +44,30 @@ public class SecondActivity extends AppCompatActivity {
 
         Log.i("Saved Item: ", save);
 
-        // Store the information in txt file
-        String fileName = LocalDateTime.now().toString() + ".txt";
+        LocalDateTime myDateObj = LocalDateTime.now();
+        DateTimeFormatter myFormatObj = DateTimeFormatter.ofPattern("dd-MM-yyyy HH,mm,ss");
 
-        FileOutputStream fos = null;
+        // Name of the saved file
+        String fileName = teacherName + " " + myDateObj.format(myFormatObj) + ".txt";
 
-        try {
-            fos = openFileOutput(fileName, MODE_PRIVATE);
-            fos.write(save.getBytes());
-
-        } catch (Exception e) {
-            e.printStackTrace();
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
+            File file = null;
+            file = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS), "Attendance Management");
+            if (!file.exists()) {
+                file.mkdirs();
+            }
+            try {
+                File gpxfile = new File(file, fileName);
+                FileWriter writer = new FileWriter(gpxfile);
+                writer.append(save);
+                writer.flush();
+                writer.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
 
-        // Create file
-        // File for storing in internal storage
-//        File file = new File(Environment.getExternalStorageDirectory().getAbsolutePath(), fileName);
-
-//        File file = commonDocumentDirPath(fileName);
-//
-//        // Write to the file
-//        try {
-//            FileOutputStream fos = new FileOutputStream(file);
-//            fos.write(save.getBytes());
-//            fos.flush();
-//            fos.close();
-//
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-
-        Toast.makeText(this, "Attendance saved in " + fileName, Toast.LENGTH_LONG).show();
+        Toast.makeText(this, "Attendance saved in Documents/Attendance Management/" + fileName, Toast.LENGTH_LONG).show();
 
         // Uncheck all the items after saving
         for (int i = 0; i < listView.getCount(); i++) {
@@ -88,7 +82,6 @@ public class SecondActivity extends AppCompatActivity {
         setContentView(R.layout.activity_second);
 
         // Ask for permission to write in the external storage
-
         if (checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
 
             requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1000);
@@ -119,40 +112,7 @@ public class SecondActivity extends AppCompatActivity {
         ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_multiple_choice, listOfStudents);
         listView.setAdapter(arrayAdapter);
 
-
     }
 
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        switch (requestCode) {
-            case 1000:
-                if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    Toast.makeText(this, "Permission Granted!!", Toast.LENGTH_SHORT).show();
-                } else {
-                    Toast.makeText(this, "Permission Denied!!", Toast.LENGTH_SHORT).show();
-                    finish();
-                }
-        }
-    }
-
-    public File commonDocumentDirPath(String FolderName) {
-        File dir = null;
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-            dir = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS) + "/" + FolderName);
-        } else {
-            dir = new File(Environment.getExternalStorageDirectory() + "/" + FolderName);
-        }
-
-        // Make sure the path directory exists.
-        if (!dir.exists()) {
-            // Make it, if it doesn't exit
-            boolean success = dir.mkdirs();
-            if (!success) {
-                dir = null;
-            }
-        }
-        return dir;
-    }
 
 }

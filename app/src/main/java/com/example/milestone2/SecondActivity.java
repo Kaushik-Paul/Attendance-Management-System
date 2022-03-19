@@ -50,7 +50,10 @@ public class SecondActivity extends AppCompatActivity {
         // Name of the saved file
         String fileName = teacherName + " " + myDateObj.format(myFormatObj) + ".txt";
 
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
+        if (
+                ActivityCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                        == PackageManager.PERMISSION_GRANTED
+        ) {
             File file = null;
             file = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS), "Attendance Management");
             if (!file.exists()) {
@@ -67,7 +70,11 @@ public class SecondActivity extends AppCompatActivity {
             }
         }
 
-        Toast.makeText(this, "Attendance saved in Documents/Attendance Management/" + fileName, Toast.LENGTH_LONG).show();
+        Toast.makeText(
+                this,
+                "Attendance saved in Documents/Attendance Management/" + fileName,
+                Toast.LENGTH_LONG)
+                .show();
 
         // Uncheck all the items after saving
         for (int i = 0; i < listView.getCount(); i++) {

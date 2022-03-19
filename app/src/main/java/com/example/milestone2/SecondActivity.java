@@ -30,19 +30,19 @@ public class SecondActivity extends AppCompatActivity {
 
         listView = (ListView) findViewById(R.id.listView);
 
-        String save = informationTextView.getText().toString() + "\n\r";
+        StringBuilder save = new StringBuilder(informationTextView.getText().toString() + "\n\r");
         String teacherName = getIntent().getExtras().getString("teacherName");
 
         for (int i = 0; i < listView.getCount(); i++) {
             if (listView.isItemChecked(i)) {
-                save += "1";
+                save.append("1");
             } else {
-                save += "0";
+                save.append("0");
             }
         }
-        save += "\n\r";
+        save.append("\n\r");
 
-        Log.i("Saved Item: ", save);
+        Log.i("Saved Item: ", save.toString());
 
         LocalDateTime myDateObj = LocalDateTime.now();
         DateTimeFormatter myFormatObj = DateTimeFormatter.ofPattern("dd-MM-yyyy HH.mm.ss");
@@ -59,7 +59,7 @@ public class SecondActivity extends AppCompatActivity {
             try {
                 File gpxfile = new File(file, fileName);
                 FileWriter writer = new FileWriter(gpxfile);
-                writer.append(save);
+                writer.append(save.toString());
                 writer.flush();
                 writer.close();
             } catch (Exception e) {

@@ -23,16 +23,34 @@ import java.util.List;
 public class ThirdActivity extends AppCompatActivity {
 
     TextView informationTextView;
-
     ListView listView;
+
+    // Values to Use
+    static String stream;
+    static String teacherName;
+    static String subjectCode;
+    static int noOfStudents;
 
     public void saveOption(View view) {
 
         listView = (ListView) findViewById(R.id.listView);
 
-        StringBuilder save = new StringBuilder(informationTextView.getText().toString() + "\n\r");
-        String teacherName = getIntent().getExtras().getString("teacherName");
+        // Get formatted date and time
+        LocalDateTime myDateObj = LocalDateTime.now();
+        DateTimeFormatter myFormattedDate = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+        DateTimeFormatter myFormattedTime= DateTimeFormatter.ofPattern("HH.mm.ss");
+        String formattedDate = myDateObj.format(myFormattedDate);
+        String formattedTime = myDateObj.format(myFormattedTime);
 
+        StringBuilder save = new StringBuilder();
+
+        // Values to be written in txt file
+        save.append(teacherName).append(",");
+        save.append(stream).append(",");
+        save.append(subjectCode).append(",");
+        save.append(noOfStudents).append(",");
+
+        // get the attendance
         for (int i = 0; i < listView.getCount(); i++) {
             if (listView.isItemChecked(i)) {
                 save.append("1");
@@ -40,16 +58,16 @@ public class ThirdActivity extends AppCompatActivity {
                 save.append("0");
             }
         }
-        save.append("\n\r");
+        save.append(",").append(formattedDate).append(",").append(formattedTime);
 
+        // Log the info for debugging
         Log.i("Saved Item: ", save.toString());
 
-        LocalDateTime myDateObj = LocalDateTime.now();
-        DateTimeFormatter myFormatObj = DateTimeFormatter.ofPattern("dd-MM-yyyy HH.mm.ss");
 
         // Name of the saved file
-        String fileName = teacherName + " " + myDateObj.format(myFormatObj) + ".txt";
+        String fileName = teacherName + " " + formattedDate + formattedTime + ".txt";
 
+        // Check for permission to excess external storage
         if (
                 ActivityCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
                         == PackageManager.PERMISSION_GRANTED
@@ -70,6 +88,7 @@ public class ThirdActivity extends AppCompatActivity {
             }
         }
 
+        // Pop a toast message
         Toast.makeText(
                         this,
                         "Attendance saved in Documents/Attendance Management/" + fileName,
@@ -92,17 +111,16 @@ public class ThirdActivity extends AppCompatActivity {
         if (checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
 
             requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1000);
-
         }
 
+        informationTextView = (TextView) findViewById(R.id.informationTextView);
 
         // Values to Use
-        String stream = getIntent().getExtras().getString("stream");
-        String teacherName = getIntent().getExtras().getString("teacherName");
-        String subjectCode = getIntent().getExtras().getString("subjectCode");
-        int noOfStudents = getIntent().getExtras().getInt("noOfStudents");
+        stream = getIntent().getExtras().getString("stream");
+        teacherName = getIntent().getExtras().getString("teacherName");
+        subjectCode = getIntent().getExtras().getString("subjectCode");
+        noOfStudents = getIntent().getExtras().getInt("noOfStudents");
 
-        informationTextView = (TextView) findViewById(R.id.informationTextView);
 
         String information = "Teacher Name: " + teacherName + "\n\r" + "Stream: " + stream + "\n\r" + "Subject Code: " + subjectCode + "\n\r"
                 + "No of Students: " + noOfStudents;
@@ -116,7 +134,11 @@ public class ThirdActivity extends AppCompatActivity {
         listView = (ListView) findViewById(R.id.listView);
 
         listView = (ListView) findViewById(R.id.listView);
-        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_multiple_choice, listOfStudents);
+        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(
+                this,
+                android.R.layout.simple_list_item_multiple_choice,
+                listOfStudents
+        );
         listView.setAdapter(arrayAdapter);
 
     }

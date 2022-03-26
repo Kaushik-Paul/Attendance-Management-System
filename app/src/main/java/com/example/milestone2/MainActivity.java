@@ -1,76 +1,43 @@
 package com.example.milestone2;
 
-import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.EditText;
-import android.widget.Spinner;
+import android.os.Handler;
+import android.view.WindowManager;
 import androidx.appcompat.app.AppCompatActivity;
 
 public class MainActivity extends AppCompatActivity {
 
-    static String stream;
-
-    EditText teacherName;
-    EditText subjectCode;
-    EditText noOfStudents;
-
-    public void formSubmit(View view) {
-
-        teacherName = (EditText) findViewById(R.id.teacherNameEditText);
-        subjectCode = (EditText) findViewById(R.id.subjectCodeEditText);
-        noOfStudents = (EditText) findViewById(R.id.noOfStudentsEditText);
-
-        new AlertDialog.Builder(this)
-                .setIcon(android.R.drawable.ic_dialog_alert)
-                .setTitle("Confirm")
-                .setMessage("Are You Sure??")
-                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        Log.i("Info:", "Yes Button is pressed");
-
-                        Intent intent = new Intent(MainActivity.this, SecondActivity.class);
-                        intent.putExtra("stream", stream);
-                        intent.putExtra("teacherName", teacherName.getText().toString());
-                        intent.putExtra("subjectCode", subjectCode.getText().toString());
-                        intent.putExtra("noOfStudents", Integer.parseInt(noOfStudents.getText().toString()));
-
-                        startActivity(intent);
-
-                    }
-                })
-                .setNegativeButton("No", null)
-                .show();
-
-    }
+    private static int SPLASH_SCREEN_TIME_OUT=2000;
+    // After completion of 2000 ms, the next activity will get started.
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        Spinner spinner = findViewById(R.id.spinner);
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.stream, android.R.layout.simple_spinner_item);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinner.setAdapter(adapter);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+                WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        // This method is used so that the splash activity
+        // can cover the entire screen.
 
-        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        setContentView(R.layout.activity_main);
+        // this will bind your MainActivity.class file with activity_main.
+
+        new Handler().postDelayed(new Runnable() {
             @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                stream = adapterView.getItemAtPosition(i).toString();
-                Log.i("Item Selected: ", stream);
-            }
+            public void run() {
+                Intent i=new Intent(MainActivity.this,
+                        SecondActivity.class);
+                // Intent is used to switch from one activity to another.
 
-            @Override
-            public void onNothingSelected(AdapterView<?> adapterView) {
+                startActivity(i);
+                // invoke the SecondActivity.
 
+                finish();
+                // the current activity will get finished.
             }
-        });
+        }, SPLASH_SCREEN_TIME_OUT);
+
     }
 }

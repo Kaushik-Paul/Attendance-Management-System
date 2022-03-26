@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Milestone 2</string>
+    <string name="app_name">Attendance Management</string>
     <string-array name="stream">
         <item>CSE</item>
         <item>IT</item>

@@ -71,9 +71,9 @@ public class SecondActivity extends AppCompatActivity {
         }
 
         Toast.makeText(
-                this,
-                "Attendance saved in Documents/Attendance Management/" + fileName,
-                Toast.LENGTH_LONG)
+                        this,
+                        "Attendance saved in Documents/Attendance Management/" + fileName,
+                        Toast.LENGTH_LONG)
                 .show();
 
         // Uncheck all the items after saving

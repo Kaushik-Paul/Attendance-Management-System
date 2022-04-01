@@ -67,7 +67,6 @@ public class ThirdActivity extends AppCompatActivity {
         // Log the info for debugging
         Log.i("Saved Item: ", save.toString());
 
-
         // Name of the saved file
         String fileName = teacherName + " " + formattedDate + formattedTimeWithSeconds + ".txt";
 
@@ -157,7 +156,7 @@ public class ThirdActivity extends AppCompatActivity {
 
         List<String> listOfStudents = new ArrayList<>();
         for (int i = 1; i <= noOfStudents; i++) {
-            listOfStudents.add(Integer.toString(i));
+            listOfStudents.add("Roll No: " + Integer.toString(i));
         }
 
         listView = (ListView) findViewById(R.id.listView);

@@ -1,6 +1,9 @@
 package com.example.milestone2;
 
 import android.Manifest;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.Environment;
@@ -30,17 +33,18 @@ public class ThirdActivity extends AppCompatActivity {
     static String teacherName;
     static String subjectCode;
     static int noOfStudents;
+    // Get formatted date and time
+    LocalDateTime myDateObj = LocalDateTime.now();
+    DateTimeFormatter myFormattedDate = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+    DateTimeFormatter myFormattedTimeWithSeconds = DateTimeFormatter.ofPattern("HH.mm.ss");
+    DateTimeFormatter myFormattedTimeWithoutSeconds = DateTimeFormatter.ofPattern("HH:mm");
+    String formattedDate = myDateObj.format(myFormattedDate);
+    String formattedTimeWithSeconds = myDateObj.format(myFormattedTimeWithSeconds);
+    String formattedTimeWithoutSeconds = myDateObj.format(myFormattedTimeWithoutSeconds);
 
     public void saveOption(View view) {
 
         listView = (ListView) findViewById(R.id.listView);
-
-        // Get formatted date and time
-        LocalDateTime myDateObj = LocalDateTime.now();
-        DateTimeFormatter myFormattedDate = DateTimeFormatter.ofPattern("dd-MM-yyyy");
-        DateTimeFormatter myFormattedTime= DateTimeFormatter.ofPattern("HH.mm.ss");
-        String formattedDate = myDateObj.format(myFormattedDate);
-        String formattedTime = myDateObj.format(myFormattedTime);
 
         StringBuilder save = new StringBuilder();
 
@@ -58,14 +62,14 @@ public class ThirdActivity extends AppCompatActivity {
                 save.append("0");
             }
         }
-        save.append(",").append(formattedDate).append(",").append(formattedTime);
+        save.append(",").append(formattedDate).append(",").append(formattedTimeWithSeconds);
 
         // Log the info for debugging
         Log.i("Saved Item: ", save.toString());
 
 
         // Name of the saved file
-        String fileName = teacherName + " " + formattedDate + formattedTime + ".txt";
+        String fileName = teacherName + " " + formattedDate + formattedTimeWithSeconds + ".txt";
 
         // Check for permission to excess external storage
         if (
@@ -99,6 +103,30 @@ public class ThirdActivity extends AppCompatActivity {
         for (int i = 0; i < listView.getCount(); i++) {
             listView.setItemChecked(i, false);
         }
+
+        // Alert Dialog for next path
+        new AlertDialog.Builder(this)
+                .setIcon(android.R.drawable.ic_dialog_alert)
+                .setTitle("Attendance Saved!!!")
+                .setMessage("Continue??")
+                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        Log.i("Info:", "Yes Button is pressed");
+
+                        Intent intent = new Intent(ThirdActivity.this, SecondActivity.class);
+                        startActivity(intent);
+                    }
+                })
+                .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        moveTaskToBack(true);
+                        android.os.Process.killProcess(android.os.Process.myPid());
+                        System.exit(1);
+                    }
+                })
+                .show();
     }
 
 
@@ -122,8 +150,9 @@ public class ThirdActivity extends AppCompatActivity {
         noOfStudents = getIntent().getExtras().getInt("noOfStudents");
 
 
-        String information = "Teacher Name: " + teacherName + "\n\r" + "Stream: " + stream + "\n\r" + "Subject Code: " + subjectCode + "\n\r"
-                + "No of Students: " + noOfStudents;
+        String information = "Teacher Name: " + teacherName + "\n\r" + "Stream: " + stream + "\n\r" + "Subject Code: " +
+                subjectCode + "\n\r" + "No of Students: " + noOfStudents + "\n\r" + "Date: " + formattedDate + "\n\r"
+                + "Time: " + formattedTimeWithoutSeconds;
         informationTextView.setText(information);
 
         List<String> listOfStudents = new ArrayList<>();

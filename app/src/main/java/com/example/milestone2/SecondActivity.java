@@ -38,7 +38,7 @@ public class SecondActivity extends AppCompatActivity {
                         Intent intent = new Intent(SecondActivity.this, ThirdActivity.class);
                         intent.putExtra("stream", stream);
                         intent.putExtra("teacherName", teacherName.getText().toString());
-                        intent.putExtra("subjectCode", subjectCode.getText().toString());
+                        intent.putExtra("subjectCode", subjectCode.getText().toString().trim());
                         intent.putExtra("noOfStudents", Integer.parseInt(noOfStudents.getText().toString()));
 
                         startActivity(intent);

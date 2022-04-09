@@ -1,5 +1,5 @@
-# Created by https://www.toptal.com/developers/gitignore/api/intellij+all,android,java,gradle
-# Edit at https://www.toptal.com/developers/gitignore?templates=intellij+all,android,java,gradle
+# Created by https://www.toptal.com/developers/gitignore/api/intellij+all,gradle,android,java
+# Edit at https://www.toptal.com/developers/gitignore?templates=intellij+all,gradle,android,java
 
 ### Android ###
 # Gradle files
@@ -178,4 +178,4 @@ gradle-app.setting
 # JDT-specific (Eclipse Java Development Tools)
 .classpath
 
-# End of https://www.toptal.com/developers/gitignore/api/intellij+all,android,java,gradle
+# End of https://www.toptal.com/developers/gitignore/api/intellij+all,gradle,android,java

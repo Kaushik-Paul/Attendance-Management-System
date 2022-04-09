@@ -1,0 +1,19 @@
+
+<resources>
+    <style name="AppTheme" parent="Theme.AppCompat.Light">
+
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+
+    </style>
+
+    <style name="BackgroundImageStyle">
+         <item name="android:windowBackground">@drawable/bart</item>
+    </style>
+
+    <style name="TextAppearance.AppCompat.Widget.ActionBar.Title" parent="@android:style/TextAppearance">
+        <item name="android:textSize">20sp</item>
+        <item name="android:textColor">@color/title_color</item>
+    </style>
+</resources>

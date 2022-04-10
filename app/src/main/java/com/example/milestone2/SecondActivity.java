@@ -15,6 +15,7 @@ import android.os.Bundle;
 public class SecondActivity extends AppCompatActivity {
 
     static String stream;
+    static String semester;
 
     EditText teacherName;
     EditText subjectCode;
@@ -40,6 +41,7 @@ public class SecondActivity extends AppCompatActivity {
                         intent.putExtra("teacherName", teacherName.getText().toString());
                         intent.putExtra("subjectCode", subjectCode.getText().toString().trim());
                         intent.putExtra("noOfStudents", Integer.parseInt(noOfStudents.getText().toString()));
+                        intent.putExtra("semester", semester);
 
                         startActivity(intent);
 
@@ -54,16 +56,34 @@ public class SecondActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_second);
-        Spinner spinner = findViewById(R.id.spinner);
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.stream, android.R.layout.simple_spinner_item);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinner.setAdapter(adapter);
+        Spinner spinnerStream = findViewById(R.id.spinner);
+        ArrayAdapter<CharSequence> adapterStream = ArrayAdapter.createFromResource(this, R.array.stream, android.R.layout.simple_spinner_item);
+        adapterStream.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinnerStream.setAdapter(adapterStream);
 
-        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        spinnerStream.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 stream = adapterView.getItemAtPosition(i).toString();
-                Log.i("Item Selected: ", stream);
+                Log.i("Stream Selected: ", stream);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+
+        Spinner spinnerSemester = findViewById(R.id.spinnerSem);
+        ArrayAdapter<CharSequence> adapterSem = ArrayAdapter.createFromResource(this, R.array.semester, android.R.layout.simple_spinner_item);
+        adapterSem.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinnerSemester.setAdapter(adapterSem);
+
+        spinnerSemester.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                semester = adapterView.getItemAtPosition(i).toString();
+                Log.i("Semester Selected: ", semester);
             }
 
             @Override

@@ -33,6 +33,7 @@ public class ThirdActivity extends AppCompatActivity {
     static String teacherName;
     static String subjectCode;
     static int noOfStudents;
+    static String semester;
     // Get formatted date and time
     LocalDateTime myDateObj = LocalDateTime.now();
     DateTimeFormatter myFormattedDate = DateTimeFormatter.ofPattern("dd-MM-yyyy");
@@ -52,6 +53,7 @@ public class ThirdActivity extends AppCompatActivity {
         save.append(teacherName).append(",");
         save.append(stream).append(",");
         save.append(subjectCode).append(",");
+        save.append(semester).append(",");
         save.append(noOfStudents).append(",");
 
         // get the attendance
@@ -147,10 +149,12 @@ public class ThirdActivity extends AppCompatActivity {
         teacherName = getIntent().getExtras().getString("teacherName");
         subjectCode = getIntent().getExtras().getString("subjectCode");
         noOfStudents = getIntent().getExtras().getInt("noOfStudents");
+        semester = getIntent().getExtras().getString("semester");
 
 
         String information = "Teacher Name: " + teacherName + "\n\r" + "Stream: " + stream + "\n\r" + "Subject Code: " +
-                subjectCode + "\n\r" + "No of Students: " + noOfStudents + "\n\r" + "Date: " + formattedDate + "\n\r"
+                subjectCode + "\n\r" + "Semester: " + semester + "\n\r" + "No of Students: "
+                + noOfStudents + "\n\r" + "Date: " + formattedDate + "\n\r"
                 + "Time: " + formattedTimeWithoutSeconds;
         informationTextView.setText(information);
 

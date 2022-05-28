@@ -41,7 +41,7 @@ public class SecondActivity extends AppCompatActivity {
                             intent.putExtra("stream", stream);
                             intent.putExtra("teacherName", teacherName.getText().toString());
                             intent.putExtra("subjectCode", subjectCode.getText().toString().trim());
-                            intent.putExtra("noOfStudents", Integer.parseInt(noOfStudents.getText().toString()));
+                            intent.putExtra("noOfStudents", numberOfStudentsInInt);
                             intent.putExtra("semester", semester);
 
                             startActivity(intent);
@@ -51,6 +51,7 @@ public class SecondActivity extends AppCompatActivity {
                     .setNegativeButton("No", null)
                     .show();
         } catch (NumberFormatException e) {
+            // Add validation in number of students
             noOfStudents.setError("Enter a Valid Number");
         }
 

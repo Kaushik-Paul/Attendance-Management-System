@@ -3,6 +3,7 @@ package com.example.milestone2;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -10,13 +11,11 @@ import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
 import androidx.appcompat.app.AppCompatActivity;
-import android.os.Bundle;
 
 public class SecondActivity extends AppCompatActivity {
 
     static String stream;
     static String semester;
-
     EditText teacherName;
     EditText subjectCode;
     EditText noOfStudents;
@@ -27,28 +26,33 @@ public class SecondActivity extends AppCompatActivity {
         subjectCode = (EditText) findViewById(R.id.subjectCodeEditText);
         noOfStudents = (EditText) findViewById(R.id.noOfStudentsEditText);
 
-        new AlertDialog.Builder(this)
-                .setIcon(android.R.drawable.ic_dialog_alert)
-                .setTitle("Confirm")
-                .setMessage("Are You Sure??")
-                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        Log.i("Info:", "Yes Button is pressed");
+        try {
+            Integer numberOfStudentsInInt = Integer.parseInt(noOfStudents.getText().toString());
+            new AlertDialog.Builder(this)
+                    .setIcon(android.R.drawable.ic_dialog_alert)
+                    .setTitle("Confirm")
+                    .setMessage("Are You Sure??")
+                    .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            Log.i("Info:", "Yes Button is pressed");
 
-                        Intent intent = new Intent(SecondActivity.this, ThirdActivity.class);
-                        intent.putExtra("stream", stream);
-                        intent.putExtra("teacherName", teacherName.getText().toString());
-                        intent.putExtra("subjectCode", subjectCode.getText().toString().trim());
-                        intent.putExtra("noOfStudents", Integer.parseInt(noOfStudents.getText().toString()));
-                        intent.putExtra("semester", semester);
+                            Intent intent = new Intent(SecondActivity.this, ThirdActivity.class);
+                            intent.putExtra("stream", stream);
+                            intent.putExtra("teacherName", teacherName.getText().toString());
+                            intent.putExtra("subjectCode", subjectCode.getText().toString().trim());
+                            intent.putExtra("noOfStudents", Integer.parseInt(noOfStudents.getText().toString()));
+                            intent.putExtra("semester", semester);
 
-                        startActivity(intent);
+                            startActivity(intent);
 
-                    }
-                })
-                .setNegativeButton("No", null)
-                .show();
+                        }
+                    })
+                    .setNegativeButton("No", null)
+                    .show();
+        } catch (NumberFormatException e) {
+            noOfStudents.setError("Enter a Valid Number");
+        }
 
     }
 
